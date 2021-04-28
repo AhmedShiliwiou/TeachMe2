@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tutor{% endblock %}
+
+{% block body %}
+    <h1>Tutor</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ tutor.id }}</td>
+            </tr>
+            <tr>
+                <th>Username</th>
+                <td>{{ tutor.username }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ tutor.email }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ tutor.password }}</td>
+            </tr>
+            <tr>
+                <th>First Name</th>
+                <td>{{ tutor.firstName }}</td>
+            </tr>
+            <tr>
+                <th>Last Name</th>
+                <td>{{ tutor.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Cin</th>
+                <td>{{ tutor.cin }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ tutor.status }}</td>
+            </tr>
+            <tr>
+                <th>Date of Birth</th>
+                <td>{{ tutor.dateBirth ? tutor.dateBirth|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date Add</th>
+                <td>{{ tutor.dateAdd ? tutor.dateAdd|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Profile Picture</th>
+                <td>{{ tutor.profilePicture }}</td>
+            </tr>
+            <tr>
+                <th>State</th>
+                <td>{{ tutor.state }}</td>
+            </tr>
+            <tr>
+                <th>Phone Number</th>
+                <td>{{ tutor.phoneNumber }}</td>
+            </tr>
+            <tr>
+                <th>Nb Formation</th>
+                <td>{{ tutor.nbFormation }}</td>
+            </tr>
+            <tr>
+                <th>Certificats</th>
+                <td>{{ tutor.certificats }}</td>
+            </tr>
+            <tr>
+                <th>Nb Student</th>
+                <td>{{ tutor.nbStudent }}</td>
+            </tr>
+            <tr>
+                <th>Price per Hour</th>
+                <td>{{ tutor.priceHour }}</td>
+            </tr>
+            <tr>
+                <th>Schedule</th>
+                <td>{{ tutor.schedule }}</td>
+            </tr>
+            <tr>
+                <th>Cv</th>
+                <td>{{ tutor.cv }}</td>
+            </tr>
+            <tr>
+                <th>Video</th>
+                <td>{{ tutor.video }}</td>
+            </tr>
+            <tr>
+                <th>Subject</th>
+                <td>{{ tutor.subject }}</td>
+            </tr>
+            <tr>
+                <th>Language</th>
+                <td>{{ tutor.language }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('tutor_index') }}">back to list</a>
+
+    <a href="{{ path('tutor_edit', {'id': tutor.id}) }}">edit</a>
+
+    {{ include('tutor/_delete_form.html.twig') }}
+{% endblock %}

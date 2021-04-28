@@ -1,0 +1,53 @@
+{% block body %}
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>FirstName</th>
+        <th>LastName</th>
+        <th>Cin</th>
+        <th>Status</th>
+        <th>DateBirth</th>
+        <th>DateAdd</th>
+        <th>ProfilePic</th>
+        <th>State</th>
+        <th>PhoneNumber</th>
+        <th>NbFormationEnrg</th>
+        <th>ActiveFormation</th>
+        <th>FinishedFormation</th>
+        <th>Schedule</th>
+        <th>actions</th>
+    </tr>
+    </thead>
+    <tbody id ="all">
+    {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.username }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.password }}</td>
+            <td>{{ student.firstName }}</td>
+            <td>{{ student.lastName }}</td>
+            <td>{{ student.cin }}</td>
+            <td>{{ student.status }}</td>
+            <td>{{ student.dateBirth ? student.dateBirth|date('Y-m-d') : '' }}</td>
+            <td>{{ student.dateAdd ? student.dateAdd|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ student.profilePic }}</td>
+            <td>{{ student.state }}</td>
+            <td>{{ student.phoneNumber }}</td>
+            <td>{{ student.nbFormationEnrg }}</td>
+            <td>{{ student.activeFormation }}</td>
+            <td>{{ student.finishedFormation }}</td>
+            <td>{{ student.schedule }}</td>
+            <td>
+
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% endblock %}

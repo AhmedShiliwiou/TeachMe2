@@ -1,0 +1,76 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block title %}Tutor index{% endblock %}
+
+{% block body %}
+    <h1>Tutor index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Cin</th>
+                <th>Status</th>
+                <th>DateBirth</th>
+                <th>DateAdd</th>
+                <th>ProfilePicture</th>
+                <th>State</th>
+                <th>PhoneNumber</th>
+                <th>NbFormation</th>
+                <th>Certificats</th>
+                <th>NbStudent</th>
+                <th>PriceHour</th>
+                <th>Schedule</th>
+                <th>Cv</th>
+                <th>Video</th>
+                <th>Subject</th>
+                <th>Language</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tutor in tutors %}
+            <tr>
+                <td>{{ tutor.id }}</td>
+                <td>{{ tutor.username }}</td>
+                <td>{{ tutor.email }}</td>
+                <td>{{ tutor.password }}</td>
+                <td>{{ tutor.firstName }}</td>
+                <td>{{ tutor.lastName }}</td>
+                <td>{{ tutor.cin }}</td>
+                <td>{{ tutor.status }}</td>
+                <td>{{ tutor.dateBirth ? tutor.dateBirth|date('Y-m-d') : '' }}</td>
+                <td>{{ tutor.dateAdd ? tutor.dateAdd|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ tutor.profilePicture }}</td>
+                <td>{{ tutor.state }}</td>
+                <td>{{ tutor.phoneNumber }}</td>
+                <td>{{ tutor.nbFormation }}</td>
+                <td>{{ tutor.certificats }}</td>
+                <td>{{ tutor.nbStudent }}</td>
+                <td>{{ tutor.priceHour }}</td>
+                <td>{{ tutor.schedule }}</td>
+                <td>{{ tutor.cv }}</td>
+                <td>{{ tutor.video }}</td>
+                <td>{{ tutor.subject }}</td>
+                <td>{{ tutor.language }}</td>
+                <td>
+                    <a href="{{ path('tutor_show', {'id': tutor.id}) }}" class="btn btn-outline-primary  btn-lg " role="button" aria-disabled="true">show</a>
+                    <a href="{{ path('tutor_edit', {'id': tutor.id}) }}" class="btn btn-outline-warning  btn-lg " role="button" aria-disabled="true">edit</a>
+                    {{ include('tutor/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="23">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('tutor_new') }}">Create new</a>
+{% endblock %}

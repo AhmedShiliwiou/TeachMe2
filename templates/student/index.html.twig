@@ -1,0 +1,247 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Student index{% endblock %}
+
+{% block body %}
+    <h1>Student index</h1>
+
+    <br>
+{#    <form action = "<?php $_PHP_SELF ?>" method = "GET">
+        <input id="GetSearch" type="text" class="form-control" name="GetSearchName" placeholder="Search now" aria-label="search" aria-describedby="search">
+
+        <input id="Getage" type="text" class="form-control" name="GetageName" placeholder="Search now" aria-label="search" aria-describedby="search">
+        <input type = "submit" />
+    </form>#}
+    <table class="table" width="100%" cellspacing="10px">
+        <tr>
+            <td>
+                <input id="search" type="text" class="form-control" name="query" placeholder="Search now" aria-label="search" aria-describedby="search">
+            </td>
+            <td>
+                <a href="{{ path('student_index')}}" id="btnSeach" class="btn-dark btn-lg" role="button" aria-disabled="true">Search</a>
+            </td>
+            <td>
+                <select name="tri" id="tri">
+                    <option value="id">ID</option>
+                    <option value="username">Username</option>
+                    <option value="firstName">First name</option>
+                    <option value="lastName">Last name</option>
+                </select>
+            </td>
+            <td>
+                <a href="{{ path('student_index')}}" id="btnTri" class="btn-dark btn-lg" role="button" aria-disabled="true">Tri</a>
+            </td>
+            <td>
+                <a href="{{ path('student_stat')}}" id="btnStat" class="btn-dark btn-lg" role="button">Statistics</a>
+            </td>
+            <td>
+                <a href="{{ path('pdf') }}" class="btn-dark btn-lg" role="button">PDF</a>
+            </td>
+        </tr>
+    </table>
+    <br>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Cin</th>
+                <th>Status</th>
+                <th>DateBirth</th>
+                <th>DateAdd</th>
+                <th>ProfilePic</th>
+                <th>State</th>
+                <th>PhoneNumber</th>
+                <th>NbFormationEnrg</th>
+                <th>ActiveFormation</th>
+                <th>FinishedFormation</th>
+                <th>Schedule</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody id ="all">
+        {% for student in students %}
+            <tr>
+                <td>{{ student.id }}</td>
+                <td>{{ student.username }}</td>
+                <td>{{ student.email }}</td>
+                <td>{{ student.password }}</td>
+                <td>{{ student.firstName }}</td>
+                <td>{{ student.lastName }}</td>
+                <td>{{ student.cin }}</td>
+                <td>{{ student.status }}</td>
+                <td>{{ student.dateBirth ? student.dateBirth|date('Y-m-d') : '' }}</td>
+                <td>{{ student.dateAdd ? student.dateAdd|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ student.profilePic }}</td>
+                <td>{{ student.state }}</td>
+                <td>{{ student.phoneNumber }}</td>
+                <td>{{ student.nbFormationEnrg }}</td>
+                <td>{{ student.activeFormation }}</td>
+                <td>{{ student.finishedFormation }}</td>
+                <td>{{ student.schedule }}</td>
+                <td>
+                    <a href="{{ path('student_show', {'id': student.id}) }}"class="btn btn-outline-primary  btn-lg " role="button" aria-disabled="true">show</a>
+                    <a href="{{ path('student_edit', {'id': student.id}) }}"class="btn btn-outline-warning btn-lg " role="button" aria-disabled="true">edit</a>
+
+                    {{ include('student/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="18">no records found</td>
+            </tr>
+        {% endfor %}
+        <tbody id ="search">
+        </tbody>
+        </tbody>
+    </table>
+
+    <a href="{{ path('student_new') }}">Create new</a>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <!--Start of Search Script-->
+    <script>
+        $( document ).ready(function() {
+            $("#btnSeach").click(function(e){
+                /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                var value = $("#search").val();
+                /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                $.ajax({
+                    /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                    url : "{{ path('student_index') }}",
+                    /* La méthode utilisée pour transférer les données est GET */
+                    method : 'GET',
+                    dataType: "JSON",
+                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                    data: {
+                        'search' : value
+                    },
+                    async : true,
+                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                    success : function(retour){
+                        if(retour){
+                            $('#t tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i,obj) {
+                                //  console.log(obj.idRegime);
+                                $('#t tbody#all').hide();
+                                $('#t tbody#search').append(
+                                    '<tr>'+
+                                        '<td>'+ student.id + '</td>' +
+                                        '<td>'+ student.username + '</td>' +
+                                        '<td>'+ student.email + '</td>' +
+                                        '<td>'+ student.password  + '</td>' +
+                                        '<td>'+ student.firstName  + '</td>' +
+                                        '<td>'+ student.lastName  + '</td>' +
+                                        '<td>'+ student.cin  + '</td>' +
+                                        '<td>'+ student.status  + '</td>' +
+                                        '<td>'+ student.dateBirth ? student.dateBirth|date('Y-m-d') : ''  + '</td>' +
+                                        '<td>'+ student.dateAdd ? student.dateAdd|date('Y-m-d H:i:s') : ''  + '</td>' +
+                                        '<td>'+ student.profilePic  + '</td>' +
+                                        '<td>'+ student.state  + '</td>' +
+                                        '<td>'+ student.phoneNumber  + '</td>' +
+                                        '<td>'+ student.nbFormationEnrg  + '</td>' +
+                                        '<td>'+ student.activeFormation  + '</td>' +
+                                        '<td>'+ student.finishedFormation  + '</td>' +
+                                        '<td>'+ student.schedule  + '</td>' +
+
+                                    '</tr>'
+
+
+                                );
+                            });
+
+                        }
+
+                        else
+                        {
+                            $('#t tbody#all').show();
+                            $('#t tbody#search').empty();
+                            $('#t tbody#search').fadeIn('fast');
+                        }
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+    <!--End of Search Script-->
+
+    <!--Start of Tri Script-->
+    <script>
+        $( document ).ready(function() {
+            $("#btnTri").click(function(e){
+                /* La variable value va prendre la valeur insérer dans le champ de texte afin d’effectuer la recherche */
+                var value = $("#tri").val();
+                /* Ajax est lancé lors du remplissage du champ texte dont l’id est « search » pour faire la recherche */
+                $.ajax({
+                    /* l’url est une chaine de caractères contenant l’adresse où la requête est envoyée */
+                    url : "{{ path('student_index') }}",
+                    /* La méthode utilisée pour transférer les données est GET */
+                    method : 'GET',
+                    dataType: "JSON",
+                    /*Ici search value va prendre la chaine entrée par un utilisateur dans la zone de recherche et sera placée après l’url */
+                    data: {
+                        'triBy' : value
+                    },
+                    async : true,
+                    /*Cette fonction permet de vider le contenu du tableau pour recevoir le nouveau contenu*/
+                    success : function(retour){
+                        if(retour){
+                            $('#t tbody#search').empty();
+                            $.each(JSON.parse(retour), function(i,obj) {
+                                //  console.log(obj.idRegime);
+                                $('#t tbody#all').hide();
+                                $('#t tbody#search').append(
+                                    '<tr>'+
+                                    '<td>'+student.id + '</td>' +
+                                    '<td>'+ student.username + '</td>' +
+                                    '<td>'+  student.email + '</td>' +
+                                    '<td>'+  student.password  + '</td>' +
+                                    '<td>'+  student.firstName  + '</td>' +
+                                    '<td>'+ student.lastName  + '</td>' +
+                                    '<td>'+ student.cin  + '</td>' +
+                                    '<td>'+ student.status  + '</td>' +
+                                    '<td>'+ student.dateBirth ? student.dateBirth|date('Y-m-d') : ''  + '</td>' +
+                                    '<td>'+ student.dateAdd ? student.dateAdd|date('Y-m-d H:i:s') : ''  + '</td>' +
+                                        '<td>'+ student.profilePic  + '</td>' +
+                                        '<td>'+ student.state  + '</td>' +
+                                        '<td>'+ student.phoneNumber  + '</td>' +
+                                        '<td>'+ student.nbFormationEnrg  + '</td>' +
+                                        '<td>'+ student.activeFormation  + '</td>' +
+                                        '<td>'+ student.finishedFormation  + '</td>' +
+                                        '<td>'+ student.schedule  + '</td>' +
+
+                                        '</tr>'
+
+
+                                );
+                            });
+
+                        }
+
+                        else
+                        {
+                            $('#t tbody#all').show();
+                            $('#t tbody#search').empty();
+                            $('#t tbody#search').fadeIn('fast');
+                        }
+                    },
+                });
+                return false;
+            });
+        });
+    </script>
+    <!--End of Tri Script-->
+
+
+
+
+{% endblock %}
