@@ -1,24 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseBack.html.twig' %}
 
 {% block title %}Student index{% endblock %}
 
 {% block body %}
     <h1>Student index</h1>
 
-    <br>
-{#    <form action = "<?php $_PHP_SELF ?>" method = "GET">
-        <input id="GetSearch" type="text" class="form-control" name="GetSearchName" placeholder="Search now" aria-label="search" aria-describedby="search">
-
-        <input id="Getage" type="text" class="form-control" name="GetageName" placeholder="Search now" aria-label="search" aria-describedby="search">
-        <input type = "submit" />
-    </form>#}
     <table class="table" width="100%" cellspacing="10px">
         <tr>
             <td>
                 <input id="search" type="text" class="form-control" name="query" placeholder="Search now" aria-label="search" aria-describedby="search">
             </td>
             <td>
-                <a href="{{ path('student_index')}}" id="btnSeach" class="btn-dark btn-lg" role="button" aria-disabled="true">Search</a>
+                <a href="{{ path('student_index')}}" id="btnSeach" class="btn-rounded btn-dark btn-lg" role="button" aria-disabled="true">Search</a>
             </td>
             <td>
                 <select name="tri" id="tri">
@@ -29,10 +22,10 @@
                 </select>
             </td>
             <td>
-                <a href="{{ path('student_index')}}" id="btnTri" class="btn-dark btn-lg" role="button" aria-disabled="true">Tri</a>
+                <a href="{{ path('student_index')}}" id="btnTri" class="btn-rounded btn-dark btn-lg" role="button" aria-disabled="true">Tri</a>
             </td>
             <td>
-                <a href="{{ path('student_stat')}}" id="btnStat" class="btn-dark btn-lg" role="button">Statistics</a>
+                <a href="{{ path('student_stat')}}" id="btnStat" class="btn-rounded btn-dark btn-lg" role="button">Statistics</a>
             </td>
             <td>
                 <a href="{{ path('pdf') }}" class="btn-dark btn-lg" role="button">PDF</a>
@@ -85,8 +78,8 @@
                 <td>{{ student.finishedFormation }}</td>
                 <td>{{ student.schedule }}</td>
                 <td>
-                    <a href="{{ path('student_show', {'id': student.id}) }}"class="btn btn-outline-primary  btn-lg " role="button" aria-disabled="true">show</a>
-                    <a href="{{ path('student_edit', {'id': student.id}) }}"class="btn btn-outline-warning btn-lg " role="button" aria-disabled="true">edit</a>
+                    <a href="{{ path('student_show', {'id': student.id}) }}"class="btn-rounded btn-outline-primary  btn-lg " role="button" aria-disabled="true">show</a>
+                    <a href="{{ path('student_edit', {'id': student.id}) }}"class="btn-rounded btn-outline-warning btn-lg " role="button" aria-disabled="true">edit</a>
 
                     {{ include('student/_delete_form.html.twig') }}
                 </td>
@@ -240,6 +233,8 @@
         });
     </script>
     <!--End of Tri Script-->
+    <br>
+    <br>
 
 
 

@@ -4,6 +4,8 @@ namespace App\Form;
 
 use App\Entity\Student;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,19 +16,15 @@ class StudentType extends AbstractType
         $builder
             ->add('username')
             ->add('email')
-            ->add('password')
+            ->add('password',PasswordType::class)
+            ->add('confirmPassword', PasswordType::class)
             ->add('firstName')
             ->add('lastName')
             ->add('cin')
-            ->add('status')
             ->add('dateBirth')
-            ->add('profilePic')
+            ->add('profilePic',FileType::class)
             ->add('state')
             ->add('phoneNumber')
-            ->add('nbFormationEnrg')
-            ->add('activeFormation')
-            ->add('finishedFormation')
-            ->add('schedule')
         ;
     }
 

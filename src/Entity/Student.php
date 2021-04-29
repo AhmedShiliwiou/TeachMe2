@@ -3,14 +3,18 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * Student
  *
  * @ORM\Table(name="student")
  * @ORM\Entity(repositoryClass="App\Repository\StudentRepository")
+ * @UniqueEntity(fields = {"email"} , message = "Email is already used!")
  */
-class Student
+class Student implements UserInterface
 {
     /**
      * @var int
@@ -45,9 +49,14 @@ class Student
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=false)
      * @Assert\NotBlank(message="password is required")
+     * @Assert\Length(min="8", minMessage="Password must have at least 8 charcters")
      */
     private $password;
 
+    /**
+     * @Assert\EqualTo(propertyPath="password",message="Password does not match")
+     */
+    public $confirmPassword;
     /**
      * @var string
      *
@@ -151,6 +160,9 @@ class Student
      * @Assert\NotBlank(message="schedule is required")
      */
     private $schedule = '0';
+
+
+
 
     /**
      * @return int
@@ -426,5 +438,11 @@ class Student
     }
 
 
+    public function getRoles(){
+        return ['ROLE_STUDENT'];
+    }
 
+    public function getSalt(){}
+
+    public function eraseCredentials(){}
 }

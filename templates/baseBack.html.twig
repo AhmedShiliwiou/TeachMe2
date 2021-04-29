@@ -139,25 +139,29 @@
             <!-- /Notifications -->
 
             <!-- User Menu -->
-            <li class="nav-item dropdown has-arrow">
-                <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                    <span class="user-img"><img class="rounded-circle" src="{{ asset("backOffice/admin/") }}assets/img/profiles/avatar-01.jpg" width="31" alt="Ryan Taylor"></span>
-                </a>
-                <div class="dropdown-menu">
-                    <div class="user-header">
-                        <div class="avatar avatar-sm">
-                            <img src="{{ asset("backOffice/admin/") }}assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
+            {% if app.user %}
+                <li class="nav-item dropdown has-arrow">
+                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <span class="user-img"><img class="rounded-circle" src="{{ asset("backOffice/admin/") }}assets/img/profiles/avatar-01.jpg" width="31" alt="Ryan Taylor"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <div class="user-header">
+                            <div class="avatar avatar-sm">
+                                <img src="{{ asset("backOffice/admin/") }}assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
+                            </div>
+                            <div class="user-text">
+                                <h6>Ryan Taylor</h6>
+                                <p class="text-muted mb-0">Administrator</p>
+                            </div>
                         </div>
-                        <div class="user-text">
-                            <h6>Ryan Taylor</h6>
-                            <p class="text-muted mb-0">Administrator</p>
-                        </div>
+                        <a class="dropdown-item" href="{{ asset("backOffice/admin/") }}profile.html">My Profile</a>
+                        <a class="dropdown-item" href="{{ asset("backOffice/admin/") }}settings.html">Settings</a>
+                        <a class="dropdown-item" href="{{ path("security_logout") }}">Logout</a>
                     </div>
-                    <a class="dropdown-item" href="{{ asset("backOffice/admin/") }}profile.html">My Profile</a>
-                    <a class="dropdown-item" href="{{ asset("backOffice/admin/") }}settings.html">Settings</a>
-                    <a class="dropdown-item" href="{{ asset("backOffice/admin/") }}login.html">Logout</a>
-                </div>
-            </li>
+                </li>
+            {% else %}
+                <a href="{{path('security_login')}}" class="btn btn-rounded btn-primary">Log in</a>
+            {% endif %}
             <!-- /User Menu -->
 
         </ul>
@@ -768,9 +772,10 @@
 
                 </div>
             </div>
-
+            {% block body %}{% endblock %}
         </div>
     </div>
+
     <!-- /Page Wrapper -->
 
 </div>

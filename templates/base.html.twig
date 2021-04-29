@@ -94,7 +94,13 @@
         <i class="bi bi-list mobile-nav-toggle"></i>
     </nav><!-- .navbar -->
 
-    <a href="{{ asset('card') }}" class="get-started-btn">Login/signup</a>
+
+
+    {% if app.user %}
+        <a href="{{path('security_logout')}}" class="get-started-btn">logout</a>
+    {% else %}
+        <a href="{{ path('security_login') }}" class="get-started-btn">Login/signup</a>
+    {% endif %}
 
 </div>
 <!-- End Header -->

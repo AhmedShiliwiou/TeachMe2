@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Student;
 use App\Form\StudentType;
 use App\Repository\StudentRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -138,16 +140,26 @@ class StudentController extends AbstractController
     /**
      * @Route("/new", name="student_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer): Response
     {
         $student = new Student();
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $hashedPass = $encoder->encodePassword($student,$student->getPassword());
+            $student->setPassword($hashedPass);
+            $student->setDateAdd(new Datetime("now"));
+            $imageFile = $form->get('profilePic')->getData();
+            if($imageFile ) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename . '.jpg';
+                $student->setProfilePic($newFilename);
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($student);
             $entityManager->flush();
+            $this->SendEmail($mailer);
 
             return $this->redirectToRoute('student_index');
         }
@@ -156,6 +168,17 @@ class StudentController extends AbstractController
             'student' => $student,
             'form' => $form->createView(),
         ]);
+    }
+
+    public function SendEmail( \Swift_Mailer $mailer){
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('teachmepidev@gmail.com')
+            ->setTo('teachmepidev@gmail.com')
+            ->setSubject('Welcome to Teach me')
+            ->setBody(
+                $this->renderView(
+                    'student/MailSuccessSignUp.html.twig'));
+        $mailer->send($message);
     }
 
     /**
@@ -173,12 +196,14 @@ class StudentController extends AbstractController
     /**
      * @Route("/{id}/edit", name="student_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Student $student): Response
+    public function edit(Request $request, Student $student,UserPasswordEncoderInterface $encoder): Response
     {
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $hashedPass = $encoder->encodePassword($student,$student->getPassword());
+            $student->setPassword($hashedPass);
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('student_index');
